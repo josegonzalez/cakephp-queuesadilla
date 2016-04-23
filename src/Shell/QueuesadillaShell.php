@@ -81,11 +81,11 @@ class QueuesadillaShell extends Shell
         $parser->addOption('config', [
             'default' => 'default',
             'help' => 'Name of a queue config to use',
-            'short' => 'q',
+            'short' => 'c',
         ]);
         $parser->addOption('queue', [
             'help' => 'Name of queue to override from loaded config',
-            'short' => 'q',
+            'short' => 'Q',
         ]);
         $parser->addOption('logger', [
             'help' => 'Name of a configured logger',
