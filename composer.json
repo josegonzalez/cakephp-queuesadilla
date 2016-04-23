@@ -16,7 +16,7 @@
     "require": {
         "cakephp/cakephp": "~3.0",
         "php": ">=5.4",
-        "josegonzalez/queuesadilla": "dev-master"
+        "josegonzalez/queuesadilla": "0.*"
     },
     "require-dev": {
         "phpunit/phpunit": "4.1.*",
