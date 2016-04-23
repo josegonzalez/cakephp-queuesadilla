@@ -4,7 +4,9 @@ namespace Josegonzalez\CakeQueuesadilla\Shell;
 use Cake\Console\Shell;
 use Cake\Core\Configure;
 use Cake\Log\Log;
+use Cake\Utility\Hash;
 use Exception;
+use Josegonzalez\CakeQueuesadilla\Queue\Queue;
 
 class QueuesadillaShell extends Shell
 {
@@ -16,40 +18,42 @@ class QueuesadillaShell extends Shell
      */
     public function main()
     {
-        $engine = $this->params['engine'];
-        $worker = $this->params['worker'];
-        $EngineClass = "josegonzalez\\Queuesadilla\\Engine\\" . $engine . 'Engine';
-        $WorkerClass = "josegonzalez\\Queuesadilla\\Worker\\" . $worker . "Worker";
-
-        $defaultConfig = Configure::read('Queuesadilla.engine');
-        $config = $this->getEngineConfig($defaultConfig);
-
-        $defaultLoggerName = Configure::read('Queuesadilla.logger');
-        $loggerName = $this->getLoggerName($defaultLoggerName);
-
-        $logger = Log::engine($loggerName);
-        $engine = new $EngineClass($logger, $config);
-
-        $worker = new $WorkerClass($engine, $logger);
+        $logger = Log::engine($this->getLoggerName('stdout'));
+        $engine = $this->getEngine($logger);
+        $worker = $this->getWorker($engine, $logger);
         $worker->work();
     }
 
     /**
-     * Retrieves default configuration for the engine
+     * Retrieves a queue engine
      *
-     * @param array $config Default engine configuration
-     * @return array
+     * @param \Psr\Log\LoggerInterface $logger logger
+     * @return \josegonzalez\Queuesadilla\Engine\Base
      */
-    public function getEngineConfig(array $config = [])
+    public function getEngine($logger)
     {
-        if (empty($config)) {
-            throw new Exception('Invalid Queuesadilla.engine config');
+        $config = Hash::get($this->params, 'config');
+        $engine = Queue::engine($config);
+        $engine->setLogger($logger);
+        if (!empty($this->params['queue'])) {
+            $engine->config('queue', $this->params['queue']);
         }
 
-        if (!empty($this->params['queue'])) {
-            $config['queue'] = $this->params['queue'];
-        }
-        return $config;
+        return $engine;
+    }
+
+    /**
+     * Retrieves a queue worker
+     *
+     * @param \josegonzalez\Queuesadilla\Engine\Base $engine engine to run
+     * @param \Psr\Log\LoggerInterface $logger logger
+     * @return \josegonzalez\Queuesadilla\Worker\Base
+     */
+    public function getWorker($engine, $logger)
+    {
+        $worker = $this->params['worker'];
+        $WorkerClass = "josegonzalez\\Queuesadilla\\Worker\\" . $worker . "Worker";
+        return new $WorkerClass($engine, $logger);
     }
 
     /**
@@ -74,19 +78,10 @@ class QueuesadillaShell extends Shell
     public function getOptionParser()
     {
         $parser = parent::getOptionParser();
-        $parser->addOption('engine', [
-            'choices' => [
-                'Beanstalk',
-                'Iron',
-                'Memory',
-                'Mysql',
-                'Null',
-                'Redis',
-                'Synchronous',
-            ],
-            'default' => 'Mysql',
-            'help' => 'Name of engine',
-            'short' => 'e',
+        $parser->addOption('config', [
+            'default' => 'default',
+            'help' => 'Name of a queue',
+            'short' => 'q',
         ]);
         $parser->addOption('queue', [
             'help' => 'Name of a queue',

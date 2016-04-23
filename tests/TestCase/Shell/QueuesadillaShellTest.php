@@ -2,8 +2,12 @@
 namespace Josegonzalez\CakeQueuesadilla\Test\Shell;
 
 use Cake\Core\Plugin;
+use Cake\Log\Log;
 use Cake\TestSuite\TestCase;
+use Josegonzalez\CakeQueuesadilla\Queue\Queue;
 use Josegonzalez\CakeQueuesadilla\Shell\QueuesadillaShell;
+use josegonzalez\Queuesadilla\Engine\NullEngine;
+use Psr\Log\NullLogger;
 
 /**
  * QueuesadillaShell test.
@@ -21,43 +25,55 @@ class QueuesadillaShellTest extends TestCase
         parent::setUp();
         $this->io = $this->getMock('Cake\Console\ConsoleIo');
         $this->shell = new QueuesadillaShell($this->io);
+        Log::reset();
+        Queue::reset();
     }
 
     /**
-     * Test that we get an engine config
+     * teardown method
      *
      * @return void
      */
-    public function testGetEngineConfig()
+    public function tearDown()
     {
-        $config = $this->shell->getEngineConfig(['url' => true]);
-        $this->assertEquals(['url' => true], $config);
-
-        $this->shell->params['queue'] = 'jobs';
-        $config = $this->shell->getEngineConfig(['url' => true]);
-        $this->assertEquals(['url' => true, 'queue' => 'jobs'], $config);
+        parent::tearDown();
+        Log::reset();
+        Queue::reset();
     }
 
     /**
-     * testNoDefaultConfig
+     * Test that the worker is an instance of the correct object
      *
-     * @expectedException Exception
-     * @expectedExceptionMessage Invalid Queuesadilla.engine config
+     * @return void
      */
-    public function testNoDefaultConfig()
+    public function testGetEngine()
     {
-        $this->shell->getEngineConfig();
+        Log::config('default', ['engine' => 'File']);
+        Queue::config('default', [
+            'url' => 'mysql://username:password@localhost:80/database'
+        ]);
+        $logger = new NullLogger;
+        $this->shell->params['config'] = 'default';
+        $engine = $this->shell->getEngine($logger);
+        $this->assertInstanceOf('josegonzalez\\Queuesadilla\\Engine\\MysqlEngine', $engine);
     }
 
     /**
-     * testNoDefaultConfig
+     * Test that the worker is an instance of the correct object
      *
-     * @expectedException Exception
-     * @expectedExceptionMessage Invalid Queuesadilla.engine config
+     * @return void
      */
-    public function testEmptyDefaultConfig()
+    public function testGetWorker()
     {
-        $this->shell->getEngineConfig([]);
+        $logger = new NullLogger;
+        $engine = new NullEngine;
+        $this->shell->params['worker'] = 'Sequential';
+        $worker = $this->shell->getWorker($engine, $logger);
+        $this->assertInstanceOf('josegonzalez\\Queuesadilla\\Worker\\SequentialWorker', $worker);
+
+        $this->shell->params['worker'] = 'Test';
+        $worker = $this->shell->getWorker($engine, $logger);
+        $this->assertInstanceOf('josegonzalez\\Queuesadilla\\Worker\\TestWorker', $worker);
     }
 
     /**
@@ -85,7 +101,6 @@ class QueuesadillaShellTest extends TestCase
         $this->shell->loadTasks();
         $parser = $this->shell->getOptionParser();
         $commands = $parser->options();
-        $this->assertArrayHasKey('engine', $commands);
         $this->assertArrayHasKey('queue', $commands);
         $this->assertArrayHasKey('logger', $commands);
         $this->assertArrayHasKey('worker', $commands);

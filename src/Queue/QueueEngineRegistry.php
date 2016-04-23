@@ -1,0 +1,95 @@
+<?php
+namespace Josegonzalez\CakeQueuesadilla\Queue;
+
+use Cake\Core\App;
+use Cake\Core\ObjectRegistry;
+use Cake\Log\Log;
+use Cake\Utility\Hash;
+use josegonzalez\Queuesadilla\Engine\EngineInterface;
+use RuntimeException;
+
+/**
+ * Registry of loaded queue engines
+ */
+class QueueEngineRegistry extends ObjectRegistry
+{
+
+    /**
+     * Resolve a queue engine classname.
+     *
+     * Part of the template method for Cake\Core\ObjectRegistry::load()
+     *
+     * @param string $class Partial classname to resolve.
+     * @return string|false Either the correct classname or false.
+     */
+    protected function _resolveClassName($class)
+    {
+        if (is_object($class)) {
+            return $class;
+        }
+
+        return App::className($class, 'Queue/Engine', 'Engine');
+    }
+
+    /**
+     * Throws an exception when a queue engine is missing.
+     *
+     * Part of the template method for Cake\Core\ObjectRegistry::load()
+     *
+     * @param string $class The classname that is missing.
+     * @param string $plugin The plugin the queue engine is missing in.
+     * @return void
+     * @throws \RuntimeException
+     */
+    protected function _throwMissingClassError($class, $plugin)
+    {
+        throw new RuntimeException(sprintf('Could not load class %s', $class));
+    }
+
+    /**
+     * Create the queue engine instance.
+     *
+     * Part of the template method for Cake\Core\ObjectRegistry::load()
+     *
+     * @param string|\josegonzalez\Queuesadilla\Engine\EngineInterface $class The classname or object to make.
+     * @param string $alias The alias of the object.
+     * @param array $settings An array of settings to use for the queue engine.
+     * @return \josegonzalez\Queuesadilla\Engine\EngineInterface The constructed queue engine class.
+     * @throws \RuntimeException when an object doesn't implement the correct interface.
+     */
+    protected function _create($class, $alias, $settings)
+    {
+        if (is_callable($class)) {
+            $class = $class($alias);
+        }
+
+        if (is_object($class)) {
+            $instance = $class;
+        }
+
+        if (!isset($instance)) {
+            $loggerName = Hash::get($settings, 'logger', 'default');
+            $logger = Log::engine($loggerName);
+            $instance = new $class($logger, $settings);
+        }
+
+        if ($instance instanceof EngineInterface) {
+            return $instance;
+        }
+
+        throw new RuntimeException(
+            'Queue Engines must implement josegonzalez\Queuesadilla\Engine\EngineInterface.'
+        );
+    }
+
+    /**
+     * Remove a single queue engine from the registry.
+     *
+     * @param string $name The queue engine name.
+     * @return void
+     */
+    public function unload($name)
+    {
+        unset($this->_loaded[$name]);
+    }
+}
