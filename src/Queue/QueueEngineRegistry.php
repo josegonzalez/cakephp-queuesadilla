@@ -68,7 +68,11 @@ class QueueEngineRegistry extends ObjectRegistry
         }
 
         if (!isset($instance)) {
-            $loggerName = Hash::get($settings, 'logger', 'default');
+            if (PHP_SAPI === 'cli') {
+                $loggerName = Hash::get($settings, 'logger', 'stdout');
+            } else {
+                $loggerName = Hash::get($settings, 'logger', 'default');
+            }
             $logger = Log::engine($loggerName);
             $instance = new $class($logger, $settings);
         }
