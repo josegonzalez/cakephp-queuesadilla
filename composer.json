@@ -25,13 +25,13 @@
     },
     "autoload": {
         "psr-4": {
-            "Josegonzalez\\CakeQueuesadilla\\Queuesadilla\\": "src",
-            "Josegonzalez\\CakeQueuesadilla\\Queuesadilla\\Test\\Fixture\\": "tests\\Fixture"
+            "Josegonzalez\\CakeQueuesadilla\\": "src",
+            "Josegonzalez\\CakeQueuesadilla\\Test\\Fixture\\": "tests\\Fixture"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "Josegonzalez\\CakeQueuesadilla\\Queuesadilla\\Test\\": "tests"
+            "Josegonzalez\\CakeQueuesadilla\\Test\\": "tests"
         }
     }
 }
