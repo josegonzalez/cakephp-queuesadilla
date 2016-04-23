@@ -58,7 +58,7 @@ class QueueTest extends TestCase
      */
     public function testValidKeyName()
     {
-        Log::config('default', ['engine' => 'File']);
+        Log::config('stdout', ['engine' => 'File']);
         Queue::config('valid', [
             'url' => 'mysql://username:password@localhost:80/database'
         ]);
