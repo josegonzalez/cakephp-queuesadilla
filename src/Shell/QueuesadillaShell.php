@@ -80,11 +80,11 @@ class QueuesadillaShell extends Shell
         $parser = parent::getOptionParser();
         $parser->addOption('config', [
             'default' => 'default',
-            'help' => 'Name of a queue',
+            'help' => 'Name of a queue config to use',
             'short' => 'q',
         ]);
         $parser->addOption('queue', [
-            'help' => 'Name of a queue',
+            'help' => 'Name of queue to override from loaded config',
             'short' => 'q',
         ]);
         $parser->addOption('logger', [
