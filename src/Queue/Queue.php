@@ -55,7 +55,9 @@ use RuntimeException;
 class Queue
 {
 
-    use StaticConfigTrait;
+    use StaticConfigTrait {
+        parseDsn as protected _parseDsn;
+    }
 
     /**
      * An array mapping url schemes to fully qualified queuing engine
@@ -135,6 +137,30 @@ class Queue
         }
     }
 
+    /**
+     * Parses a DSN into a valid connection configuration
+     *
+     * Also remap the username and password to something parse_url
+     * spits out by default.
+     *
+     * @param string $dsn The DSN string to convert to a configuration array
+     * @return array The configuration array to be stored after parsing the DSN
+     * @throws \InvalidArgumentException If not passed a string
+     */
+    public static function parseDsn($dsn)
+    {
+        $dsn = static::_parseDsn($dsn);
+        if (is_array($dsn)) {
+            if (isset($dsn['username'])) {
+                $dsn['user'] = $dsn['username'];
+            }
+
+            if (isset($dsn['password'])) {
+                $dsn['pass'] = $dsn['password'];
+            }
+        }
+        return $dsn;
+    }
     /**
      * Reset all the connected loggers.  This is useful to do when changing the logging
      * configuration or during testing when you want to reset the internal state of the
