@@ -1,0 +1,36 @@
+{
+    "name": "josegonzalez/cakephp-queuesadilla",
+    "description": "CakePHP wrapper plugin around Queuesadilla, a generic php queueing backend",
+    "type": "cakephp-plugin",
+    "keywords": ["cakephp", "queue", "shell"],
+    "homepage": "https://github.com/josegonzalez/cakephp-queuesadilla",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Jose Diaz-Gonzalez",
+            "email": "cakephp+queuesadilla@josediazgonzalez.com",
+            "homepage": "http://josediazgonzalez.com",
+            "role": "Maintainer"
+        }
+    ],
+    "require": {
+        "cakephp/cakephp": "~3.0",
+        "php": ">=5.4"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "4.1.*",
+        "cakephp/cakephp-codesniffer": "dev-master",
+        "satooshi/php-coveralls": "dev-master"
+    },
+    "autoload": {
+        "psr-4": {
+            "Josegonzalez\\CakeQueuesadilla\\Queuesadilla\\": "src",
+            "Josegonzalez\\CakeQueuesadilla\\Queuesadilla\\Test\\Fixture\\": "tests\\Fixture"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Josegonzalez\\CakeQueuesadilla\\Queuesadilla\\Test\\": "tests"
+        }
+    }
+}
