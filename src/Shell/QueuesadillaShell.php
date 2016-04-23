@@ -21,14 +21,14 @@ class QueuesadillaShell extends Shell
         $EngineClass = "josegonzalez\\Queuesadilla\\Engine\\" . $engine . 'Engine';
         $WorkerClass = "josegonzalez\\Queuesadilla\\Worker\\" . $worker . "Worker";
 
-        $config = Configure::read('Queuesadilla.engine');
-        $engineConfig = $this->getEngineConfig($config);
+        $defaultConfig = Configure::read('Queuesadilla.engine');
+        $config = $this->getEngineConfig($defaultConfig);
 
         $defaultLoggerName = Configure::read('Queuesadilla.logger');
         $loggerName = $this->getLoggerName($defaultLoggerName);
 
         $logger = Log::engine($loggerName);
-        $engine = new $EngineClass($logger, $engineConfig);
+        $engine = new $EngineClass($logger, $config);
 
         $worker = new $WorkerClass($engine, $logger);
         $worker->work();
@@ -40,7 +40,7 @@ class QueuesadillaShell extends Shell
      * @param array $config Default engine configuration
      * @return array
      */
-    protected function getEngineConfig(array $config = [])
+    public function getEngineConfig(array $config = [])
     {
         if (empty($config)) {
             throw new Exception('Invalid Queuesadilla.engine config');
@@ -58,7 +58,7 @@ class QueuesadillaShell extends Shell
      * @param array $config Default logger name
      * @return string
      */
-    protected function getLoggerName($loggerName)
+    public function getLoggerName($loggerName = null)
     {
         if (empty($loggerName)) {
             $loggerName = $this->params['logger'];
