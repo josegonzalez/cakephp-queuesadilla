@@ -6,6 +6,7 @@ use Cake\Core\ObjectRegistry;
 use Cake\Log\Log;
 use Cake\Utility\Hash;
 use josegonzalez\Queuesadilla\Engine\EngineInterface;
+use Psr\Log\LoggerInterface;
 use RuntimeException;
 
 /**
@@ -68,12 +69,11 @@ class QueueEngineRegistry extends ObjectRegistry
         }
 
         if (!isset($instance)) {
-            if (PHP_SAPI === 'cli') {
-                $loggerName = Hash::get($settings, 'logger', 'stdout');
-            } else {
-                $loggerName = Hash::get($settings, 'logger', 'default');
+            $key = PHP_SAPI === 'cli' ? 'stdout' : 'default';
+            $logger = Hash::get($settings, 'logger', $key);
+            if (!($logger instanceof LoggerInterface)) {
+                $logger = Log::engine($logger);
             }
-            $logger = Log::engine($loggerName);
             $instance = new $class($logger, $settings);
         }
 
