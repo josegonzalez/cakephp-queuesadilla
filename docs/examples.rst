@@ -20,36 +20,39 @@ You can start a queue off the ``jobs`` mysql table:
     # some other queue
     bin/cake queuesadilla --queue some-other-default
 
-    # use a different engine
-    bin/cake queuesadilla --engine redis
-
-You can customize the engine configuration under the ``Queuesadilla.engine`` array in ``config/app.php``. At the moment, it defaults to a config compatible with your application's mysql database config.
+    # use a different config
+    bin/cake queuesadilla --config other
 
 Need to queue something up?
-
 
 .. code:: php
 
     <?php
-    // assuming mysql engine
-    use josegonzalez\Queuesadilla\Engine\MysqlEngine;
-    use josegonzalez\Queuesadilla\Queue;
-
-    // get the engine config:
-    $config = Configure::read('Queuesadilla.engine');
-
-    // instantiate the things
-    $engine = new MysqlEngine($config);
-    $queue = new Queue($engine);
+    use josegonzalez\Cake\Queuesadilla\Queue\Queue;
 
     // a function in the global scope
     function some_job($job) {
         var_dump($job->data());
     }
-    $queue->push('some_job', [
+
+    // uses the 'default' engine
+    Queue::push('some_job', [
         'id' => 7,
         'message' => 'hi'
     ]);
+
+    // uses the 'other' engine
+    Queue::push('some_job', [
+        'id' => 7,
+        'message' => 'hi'
+    ], ['config' => 'other']);
+
+    // uses the 'default' engine
+    // on the 'slow' queue
+    Queue::push('some_job', [
+        'id' => 7,
+        'message' => 'hi'
+    ], ['config' => 'other', 'queue' => 'slow']);
 
     ?>
 

@@ -1,17 +1,22 @@
-Behavior configuration options
-------------------------------
+Plugin configuration options
+----------------------------
 
-This is a list of all the available `app.php` configuration options
-which can be used to configure the shell.
+This plugin can be configured via your ``config/app.php``. It works similar
+to how all other CakePHP engine-based libraries work (Cache, Email, Log), and
+as such you can have multiple backends under different names. Here is an example
+config stanza:
 
--  ``Queuesadilla.engine``: Queuesadilla queueing engine configuration
+.. code:: php
 
-    Please refer to the queuesadilla instructions on configuring an engin
+    /**
+     * Configures the Queuesadilla engine to read from mysql as it's database
+     */
+    'Queuesadilla' => [
+        'default' => [
+            'url' => env('QUEUESADILLA_DEFAULT_URL', ''),
+        ],
+    ],
 
-   - Default: (array)
-     ``[]``
-
--  ``Queuesadilla.logger``: Logger engine to use.
-
-    - Default: (string)
-      ``stdout``
+Note that the config array is passed as settings to the queueing engine. Please
+refer to the Queuesadilla `docs <http://josegonzalez.viewdocs.io/php-queuesadilla/>`_
+for more information on how each engine can be configured.
