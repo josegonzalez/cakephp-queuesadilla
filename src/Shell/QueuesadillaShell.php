@@ -2,10 +2,8 @@
 namespace Josegonzalez\CakeQueuesadilla\Shell;
 
 use Cake\Console\Shell;
-use Cake\Core\Configure;
 use Cake\Log\Log;
 use Cake\Utility\Hash;
-use Exception;
 use Josegonzalez\CakeQueuesadilla\Queue\Queue;
 
 class QueuesadillaShell extends Shell
