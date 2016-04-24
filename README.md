@@ -17,7 +17,7 @@ This plugin is a simple wrapper around the Queuesadilla queuing library, providi
 
 ## Documentation
 
-For documentation, please see [the docs](http://cakephp-queuesadilla.readthedocs.org/en/latest/).
+For documentation, please see [the docs](https://cakephp-queuesadilla.readthedocs.org/en/latest/).
 
 ## License
 
