@@ -28,7 +28,7 @@ Need to queue something up?
 .. code:: php
 
     <?php
-    use josegonzalez\Cake\Queuesadilla\Queue\Queue;
+    use Josegonzalez\CakeQueuesadilla\Queue\Queue;
 
     // a function in the global scope
     function some_job($job) {
