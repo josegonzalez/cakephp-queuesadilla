@@ -56,4 +56,6 @@ Need to queue something up?
 
     ?>
 
+You can also add the ``Josegonzalez\CakeQueuesadilla\Traits\QueueTrait`` to any class in order to have a protected ``push`` method added to the class so that you can do ``$this->push()``.
+
 See `here <https://github.com/josegonzalez/php-queuesadilla/blob/master/docs/defining-jobs.md>`_ for more information on defining jobs.
