@@ -159,6 +159,7 @@ class Queue
                 $dsn['pass'] = $dsn['password'];
             }
         }
+
         return $dsn;
     }
     /**
@@ -241,6 +242,7 @@ class Queue
         }
 
         static::_buildEngine($config);
+
         return $registry->{$config};
     }
 
@@ -260,6 +262,7 @@ class Queue
         }
 
         $engine = static::engine($config);
+
         return static::$_queuers[$config] = new Queuer($engine);
     }
 
@@ -275,6 +278,7 @@ class Queue
     {
         $config = Hash::get($options, 'config', 'default');
         $queue = static::queue($config);
+
         return $queue->push($callable, $args, $options);
     }
 }

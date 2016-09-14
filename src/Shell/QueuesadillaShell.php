@@ -51,6 +51,7 @@ class QueuesadillaShell extends Shell
     {
         $worker = $this->params['worker'];
         $WorkerClass = "josegonzalez\\Queuesadilla\\Worker\\" . $worker . "Worker";
+
         return new $WorkerClass($engine, $logger);
     }
 
@@ -65,6 +66,7 @@ class QueuesadillaShell extends Shell
         if (empty($loggerName)) {
             $loggerName = $this->params['logger'];
         }
+
         return $loggerName;
     }
 
@@ -99,6 +101,7 @@ class QueuesadillaShell extends Shell
             'help' => 'Name of worker class',
             'short' => 'w',
         ])->description(__('Runs a Queuesadilla worker.'));
+
         return $parser;
     }
 }
