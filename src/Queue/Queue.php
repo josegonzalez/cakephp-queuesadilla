@@ -151,6 +151,10 @@ class Queue
     {
         $dsn = static::_parseDsn($dsn);
         if (is_array($dsn)) {
+            if (isset($dsn['path']) && empty($dsn['database'])) {
+                $dsn['database'] = substr($dsn['path'], 1);
+            }
+
             if (isset($dsn['username'])) {
                 $dsn['user'] = $dsn['username'];
             }
