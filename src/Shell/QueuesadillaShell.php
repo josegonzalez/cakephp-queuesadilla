@@ -52,7 +52,9 @@ class QueuesadillaShell extends Shell
         $worker = $this->params['worker'];
         $WorkerClass = "josegonzalez\\Queuesadilla\\Worker\\" . $worker . "Worker";
 
-        return new $WorkerClass($engine, $logger);
+        return new $WorkerClass($engine, $logger, [
+            $engine->config('queue'),
+        ]);
     }
 
     /**
