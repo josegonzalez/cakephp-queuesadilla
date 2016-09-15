@@ -53,7 +53,7 @@ class QueuesadillaShell extends Shell
         $WorkerClass = "josegonzalez\\Queuesadilla\\Worker\\" . $worker . "Worker";
 
         return new $WorkerClass($engine, $logger, [
-            $engine->config('queue'),
+            'queue' => $engine->config('queue'),
         ]);
     }
 
