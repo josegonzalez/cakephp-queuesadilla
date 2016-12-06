@@ -16,7 +16,7 @@ class QueuesadillaShell extends Shell
      */
     public function main()
     {
-        $logger = Log::engine($this->getLoggerName('stdout'));
+        $logger = Log::engine($this->params['logger']);
         $engine = $this->getEngine($logger);
         $worker = $this->getWorker($engine, $logger);
         $worker->work();
@@ -55,21 +55,6 @@ class QueuesadillaShell extends Shell
         return new $WorkerClass($engine, $logger, [
             'queue' => $engine->config('queue'),
         ]);
-    }
-
-    /**
-     * Retrieves a name of a logger engine to use
-     *
-     * @param array $config Default logger name
-     * @return string
-     */
-    public function getLoggerName($loggerName = null)
-    {
-        if (empty($loggerName)) {
-            $loggerName = $this->params['logger'];
-        }
-
-        return $loggerName;
     }
 
     /**
