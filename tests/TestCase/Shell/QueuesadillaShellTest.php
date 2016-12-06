@@ -78,21 +78,6 @@ class QueuesadillaShellTest extends TestCase
     }
 
     /**
-     * Test that the logger name is a string
-     *
-     * @return void
-     */
-    public function testGetLoggerName()
-    {
-        $loggerName = $this->shell->getLoggerName('name');
-        $this->assertEquals('name', $loggerName);
-
-        $this->shell->params['logger'] = 'stdout';
-        $loggerName = $this->shell->getLoggerName();
-        $this->assertEquals('stdout', $loggerName);
-    }
-
-    /**
      * Test that the option parser is shaped right.
      *
      * @return void
