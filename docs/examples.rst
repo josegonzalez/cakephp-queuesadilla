@@ -9,7 +9,7 @@ You can start a queue off the ``jobs`` mysql table:
 .. code:: shell
 
     # ensure everything is migrated and the jobs table exists
-    bin/cake migrations migrate
+    bin/cake migrations migrate --plugin Josegonzalez/CakeQueuesadilla
 
     # default queue
     bin/cake queuesadilla
