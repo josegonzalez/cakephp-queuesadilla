@@ -54,6 +54,7 @@ class QueuesadillaShell extends Shell
 
         return new $WorkerClass($engine, $logger, [
             'queue' => $engine->config('queue'),
+            'maxRuntime' => $engine->config('maxRuntime')
         ]);
     }
 
