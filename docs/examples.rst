@@ -1,8 +1,8 @@
 Examples
---------
+========
 
 Basic example
-~~~~~~~~~~~~~
+-------------
 
 You can start a queue off the ``jobs`` mysql table:
 

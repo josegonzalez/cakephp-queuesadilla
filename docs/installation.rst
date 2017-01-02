@@ -1,10 +1,10 @@
 Installation
-------------
+============
 
 The only officialy supported method of installing this plugin is via composer.
 
 Using `Composer <http://getcomposer.org/>`__
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+--------------------------------------------
 
 `View on
 Packagist <https://packagist.org/packages/josegonzalez/cakephp-queuesadilla>`__,
@@ -20,7 +20,7 @@ and copy the json snippet for the latest version into your project's
     }
 
 Enable plugin
-~~~~~~~~~~~~~
+-------------
 
 You need to enable the plugin your ``config/bootstrap.php`` file:
 
@@ -33,7 +33,7 @@ If you are already using ``Plugin::loadAll();``, then this is not
 necessary.
 
 Consume the Configuration
-~~~~~~~~~~~~~~~~~~~~~~~~~
+-------------------------
 
 Once loaded, you'll need to consume the configuration in your
 ``config/bootstrap.php`` like so:

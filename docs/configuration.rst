@@ -1,5 +1,5 @@
 Plugin configuration options
-----------------------------
+============================
 
 This plugin can be configured via your ``config/app.php``. It works similar
 to how all other CakePHP engine-based libraries work (Cache, Email, Log), and
