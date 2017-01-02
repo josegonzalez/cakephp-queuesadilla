@@ -1,26 +1,20 @@
-.. CakePHP-Queuesadilla documentation master file, created by
-   sphinx-quickstart on Tue Aug 26 08:59:51 2014.
-   You can adapt this file completely to your liking, but it should at least
-   contain the root `toctree` directive.
+Introduction
+------------
 
-Welcome to CakePHP-Queuesadilla's documentation!
-==========================================
+Queuesadilla Plugin 3.0
+~~~~~~~~~~~~~~~~~~~~~~~
 
-Contents:
+This plugin is a simple wrapper around the Queuesadilla library, providing tighter integration with the CakePHP framework.
 
-.. toctree::
-   :maxdepth: 2
+Requirements
+~~~~~~~~~~~~
 
-    Introduction <introduction>
-    Installation <installation>
-    Examples <examples>
-    Configuration options <configuration>
+* CakePHP 3.x
+* PHP 5.4+
+* Patience
 
+What does this plugin do?
+~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Indices and tables
-==================
-
-* :ref:`genindex`
-* :ref:`modindex`
-* :ref:`search`
-
+* Provides a shell that reads from app configuration to run a Queuesadilla worker
+* Provides a queuing engine factory like you would see with Cache, Logging, or Email.
