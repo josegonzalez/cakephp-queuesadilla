@@ -1,7 +1,7 @@
 Installation
 ============
 
-The only officialy supported method of installing this plugin is via composer.
+The only officially supported method of installing this plugin is via composer.
 
 Using `Composer <http://getcomposer.org/>`__
 --------------------------------------------
