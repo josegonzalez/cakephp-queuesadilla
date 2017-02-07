@@ -78,7 +78,7 @@ class QueueEngineRegistry extends ObjectRegistry
                 $logger = Log::engine('debug');
             }
        
-            if($logger === false) {
+            if ($logger === false) {
                 $logger = null;
             }
             
