@@ -42,6 +42,7 @@ use RuntimeException;
  * - `MemoryEngine` - Queues in-memory, and will lose jobs after the request ends
  * - `MysqlEngine` - Queues to a database table on a mysql server
  * - `NullEngine` - Ignores all queued jobs and returns true
+ * - `PostgresEngine` - Queues to a database table on a postgres server
  * - `RedisEngine` - Queues to a redis server
  * - `SynchronousEngine` - Runs jobs immediately at the time of queueing
  *
@@ -71,6 +72,7 @@ class Queue
         'memory' => 'josegonzalez\Queuesadilla\Engine\MemoryEngine',
         'mysql' => 'josegonzalez\Queuesadilla\Engine\MysqlEngine',
         'null' => 'josegonzalez\Queuesadilla\Engine\NullEngine',
+        'postgres' => 'josegonzalez\Queuesadilla\Engine\PostgresEngine',
         'redis' => 'josegonzalez\Queuesadilla\Engine\RedisEngine',
         'synchronous' => 'josegonzalez\Queuesadilla\Engine\SynchronousEngine',
     ];
