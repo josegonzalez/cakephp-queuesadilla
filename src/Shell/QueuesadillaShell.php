@@ -59,7 +59,7 @@ class QueuesadillaShell extends Shell
             'maxRuntime' => $engine->config('maxRuntime')
         ]);
 
-        $this->__attachEvents($worker);
+        $this->attachEvents($worker);
 
         return $worker;
     }
@@ -105,58 +105,58 @@ class QueuesadillaShell extends Shell
      * @param \josegonzalez\Queuesadilla\Worker\Base $worker worker instance
      * @return void
      */
-    private function __attachEvents($worker)
+    private function attachEvents($worker)
     {
         $worker->attachListener('Worker.connectionFailed', function ($event) {
-            $event = new Event('CakeQueuesadilla.Worker.connectionFailed', $this, [
+            $event = new Event('Queue.Worker.connectionFailed', $this, [
                 'workerEvent' => $event
             ]);
             EventManager::instance()->dispatch($event);
         });
         $worker->attachListener('Worker.maxIterations', function ($event) {
-            $event = new Event('CakeQueuesadilla.Worker.maxIterations', $this, [
+            $event = new Event('Queue.Worker.maxIterations', $this, [
                 'workerEvent' => $event
             ]);
             EventManager::instance()->dispatch($event);
         });
         $worker->attachListener('Worker.maxRuntime', function ($event) {
-            $event = new Event('CakeQueuesadilla.Worker.maxRuntime', $this, [
+            $event = new Event('Queue.Worker.maxRuntime', $this, [
                 'workerEvent' => $event
             ]);
             EventManager::instance()->dispatch($event);
         });
         $worker->attachListener('Worker.job.seen', function ($event) {
-            $event = new Event('CakeQueuesadilla.Worker.job.seen', $this, [
+            $event = new Event('Queue.Worker.job.seen', $this, [
                 'workerEvent' => $event
             ]);
             EventManager::instance()->dispatch($event);
         });
         $worker->attachListener('Worker.job.empty', function ($event) {
-            $event = new Event('CakeQueuesadilla.Worker.job.empty', $this, [
+            $event = new Event('Queue.Worker.job.empty', $this, [
                 'workerEvent' => $event
             ]);
             EventManager::instance()->dispatch($event);
         });
         $worker->attachListener('Worker.job.invalid', function ($event) {
-            $event = new Event('CakeQueuesadilla.Worker.job.invalid', $this, [
+            $event = new Event('Queue.Worker.job.invalid', $this, [
                 'workerEvent' => $event
             ]);
             EventManager::instance()->dispatch($event);
         });
         $worker->attachListener('Worker.job.exception', function ($event) {
-            $event = new Event('CakeQueuesadilla.Worker.job.exception', $this, [
+            $event = new Event('Queue.Worker.job.exception', $this, [
                 'workerEvent' => $event
             ]);
             EventManager::instance()->dispatch($event);
         });
         $worker->attachListener('Worker.job.success', function ($event) {
-            $event = new Event('CakeQueuesadilla.Worker.job.success', $this, [
+            $event = new Event('Queue.Worker.job.success', $this, [
                 'workerEvent' => $event
             ]);
             EventManager::instance()->dispatch($event);
         });
         $worker->attachListener('Worker.job.failure', function ($event) {
-            $event = new Event('CakeQueuesadilla.Worker.job.failure', $this, [
+            $event = new Event('Queue.Worker.job.failure', $this, [
                 'workerEvent' => $event
             ]);
             EventManager::instance()->dispatch($event);
