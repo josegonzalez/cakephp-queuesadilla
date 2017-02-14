@@ -3,6 +3,8 @@ namespace Josegonzalez\CakeQueuesadilla\Queue;
 
 use Cake\Core\ObjectRegistry;
 use Cake\Core\StaticConfigTrait;
+use Cake\Event\Event;
+use Cake\Event\EventManager;
 use Cake\Utility\Hash;
 use InvalidArgumentException;
 use Josegonzalez\CakeQueuesadilla\Queue\QueueEngineRegistry;
@@ -284,6 +286,13 @@ class Queue
     {
         $config = Hash::get($options, 'config', 'default');
         $queue = static::queue($config);
+
+        $queue->attachListener('Queue.afterEnqueue', function ($event) {
+            $event = new Event('Queue.Queue.afterEnqueue', $this, [
+                'workerEvent' => $event
+            ]);
+            EventManager::instance()->dispatch($event);
+        });
 
         return $queue->push($callable, $args, $options);
     }
