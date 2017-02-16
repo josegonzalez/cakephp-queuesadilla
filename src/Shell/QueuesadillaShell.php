@@ -107,59 +107,25 @@ class QueuesadillaShell extends Shell
      */
     private function attachEvents($worker)
     {
-        $worker->attachListener('Worker.connectionFailed', function ($event) {
-            $event = new Event('Queue.Worker.connectionFailed', $this, [
-                'workerEvent' => $event
-            ]);
-            EventManager::instance()->dispatch($event);
-        });
-        $worker->attachListener('Worker.maxIterations', function ($event) {
-            $event = new Event('Queue.Worker.maxIterations', $this, [
-                'workerEvent' => $event
-            ]);
-            EventManager::instance()->dispatch($event);
-        });
-        $worker->attachListener('Worker.maxRuntime', function ($event) {
-            $event = new Event('Queue.Worker.maxRuntime', $this, [
-                'workerEvent' => $event
-            ]);
-            EventManager::instance()->dispatch($event);
-        });
-        $worker->attachListener('Worker.job.seen', function ($event) {
-            $event = new Event('Queue.Worker.job.seen', $this, [
-                'workerEvent' => $event
-            ]);
-            EventManager::instance()->dispatch($event);
-        });
-        $worker->attachListener('Worker.job.empty', function ($event) {
-            $event = new Event('Queue.Worker.job.empty', $this, [
-                'workerEvent' => $event
-            ]);
-            EventManager::instance()->dispatch($event);
-        });
-        $worker->attachListener('Worker.job.invalid', function ($event) {
-            $event = new Event('Queue.Worker.job.invalid', $this, [
-                'workerEvent' => $event
-            ]);
-            EventManager::instance()->dispatch($event);
-        });
-        $worker->attachListener('Worker.job.exception', function ($event) {
-            $event = new Event('Queue.Worker.job.exception', $this, [
-                'workerEvent' => $event
-            ]);
-            EventManager::instance()->dispatch($event);
-        });
-        $worker->attachListener('Worker.job.success', function ($event) {
-            $event = new Event('Queue.Worker.job.success', $this, [
-                'workerEvent' => $event
-            ]);
-            EventManager::instance()->dispatch($event);
-        });
-        $worker->attachListener('Worker.job.failure', function ($event) {
-            $event = new Event('Queue.Worker.job.failure', $this, [
-                'workerEvent' => $event
-            ]);
-            EventManager::instance()->dispatch($event);
-        });
+        $eventMap = [
+            'Worker.connectionFailed' => 'Queue.Worker.connectionFailed',
+            'Worker.maxIterations' => 'Queue.Worker.maxIterations',
+            'Worker.maxRuntime' => 'Queue.Worker.maxRuntime',
+            'Worker.job.seen' => 'Queue.Worker.job.seen',
+            'Worker.job.empty' => 'Queue.Worker.job.empty',
+            'Worker.job.invalid' => 'Queue.Worker.job.invalid',
+            'Worker.job.exception' => 'Queue.Worker.job.exception',
+            'Worker.job.success' => 'Queue.Worker.job.success',
+            'Worker.job.failure' => 'Queue.Worker.job.failure'
+        ];
+
+        foreach ($eventMap as $queueEvent => $cakeEvent) {
+            $worker->attachListener($queueEvent, function ($event) use ($cakeEvent) {
+                $event = new Event($cakeEvent, $this, [
+                    'workerEvent' => $event
+                ]);
+                EventManager::instance()->dispatch($event);
+            });
+        }
     }
 }
