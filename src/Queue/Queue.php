@@ -288,7 +288,7 @@ class Queue
         $queue = static::queue($config);
 
         $queue->attachListener('Queue.afterEnqueue', function ($event) {
-            $event = new Event('Queue.Queue.afterEnqueue', $this, [
+            $event = new Event('Queue.Queue.afterEnqueue', null, [
                 'workerEvent' => $event
             ]);
             EventManager::instance()->dispatch($event);
