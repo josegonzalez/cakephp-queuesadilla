@@ -56,7 +56,8 @@ class QueuesadillaShell extends Shell
 
         $worker = new $workerClass($engine, $logger, [
             'queue' => $engine->config('queue'),
-            'maxRuntime' => $engine->config('maxRuntime')
+            'maxRuntime' => $engine->config('maxRuntime'),
+            'maxIterations' => $engine->config('maxIterations')
         ]);
 
         $this->attachEvents($worker);
@@ -108,7 +109,7 @@ class QueuesadillaShell extends Shell
     private function attachEvents($worker)
     {
         $eventMap = [
-            'Worker.connectionFailed' => 'Queue.Worker.connectionFailed',
+            'Worker.job.connectionFailed' => 'Queue.Worker.connectionFailed',
             'Worker.maxIterations' => 'Queue.Worker.maxIterations',
             'Worker.maxRuntime' => 'Queue.Worker.maxRuntime',
             'Worker.job.seen' => 'Queue.Worker.job.seen',
