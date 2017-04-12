@@ -35,7 +35,6 @@ matrix:
       env: HHVM=1 DB=mysql db_dsn='mysql://travis@0.0.0.0/cakephp_test'
 
 before_script:
-  - pecl install sqlite3
   - composer self-update
   - composer install --prefer-source --no-interaction --dev
 
