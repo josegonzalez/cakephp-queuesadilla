@@ -68,7 +68,7 @@ Cake\Core\Plugin::load('Josegonzalez/CakeQueuesadilla', ['path' => ROOT . DS, 'a
 
 // Ensure default test connection is defined
 if (!getenv('db_dsn')) {
-    putenv('db_dsn=sqlite:///:memory:');
+    putenv('db_dsn=mysql://username:password@127.0.0.1/cakephp_test');
 }
 
 Cake\Datasource\ConnectionManager::config('test', [

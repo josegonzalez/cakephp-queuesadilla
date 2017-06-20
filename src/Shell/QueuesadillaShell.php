@@ -2,6 +2,8 @@
 namespace Josegonzalez\CakeQueuesadilla\Shell;
 
 use Cake\Console\Shell;
+use Cake\Event\Event;
+use Cake\Event\EventManager;
 use Cake\Log\Log;
 use Cake\Utility\Hash;
 use Josegonzalez\CakeQueuesadilla\Queue\Queue;
@@ -49,13 +51,18 @@ class QueuesadillaShell extends Shell
      */
     public function getWorker($engine, $logger)
     {
-        $worker = $this->params['worker'];
-        $WorkerClass = "josegonzalez\\Queuesadilla\\Worker\\" . $worker . "Worker";
+        $workerName = $this->params['worker'];
+        $workerClass = "josegonzalez\\Queuesadilla\\Worker\\" . $workerName . "Worker";
 
-        return new $WorkerClass($engine, $logger, [
+        $worker = new $workerClass($engine, $logger, [
             'queue' => $engine->config('queue'),
-            'maxRuntime' => $engine->config('maxRuntime')
+            'maxRuntime' => $engine->config('maxRuntime'),
+            'maxIterations' => $engine->config('maxIterations')
         ]);
+
+        $this->attachEvents($worker);
+
+        return $worker;
     }
 
     /**
@@ -91,5 +98,35 @@ class QueuesadillaShell extends Shell
         ])->description(__('Runs a Queuesadilla worker.'));
 
         return $parser;
+    }
+
+    /**
+     * Attach the league/event events to the CakePHP event system
+     *
+     * @param \josegonzalez\Queuesadilla\Worker\Base $worker worker instance
+     * @return void
+     */
+    private function attachEvents($worker)
+    {
+        $eventMap = [
+            'Worker.job.connectionFailed' => 'Queue.Worker.connectionFailed',
+            'Worker.maxIterations' => 'Queue.Worker.maxIterations',
+            'Worker.maxRuntime' => 'Queue.Worker.maxRuntime',
+            'Worker.job.seen' => 'Queue.Worker.job.seen',
+            'Worker.job.empty' => 'Queue.Worker.job.empty',
+            'Worker.job.invalid' => 'Queue.Worker.job.invalid',
+            'Worker.job.exception' => 'Queue.Worker.job.exception',
+            'Worker.job.success' => 'Queue.Worker.job.success',
+            'Worker.job.failure' => 'Queue.Worker.job.failure'
+        ];
+
+        foreach ($eventMap as $queueEvent => $cakeEvent) {
+            $worker->attachListener($queueEvent, function ($event) use ($cakeEvent) {
+                $event = new Event($cakeEvent, $this, [
+                    'workerEvent' => $event
+                ]);
+                EventManager::instance()->dispatch($event);
+            });
+        }
     }
 }
