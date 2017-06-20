@@ -10,13 +10,23 @@ config stanza:
 
     /**
      * Configures the Queuesadilla engine to read from mysql as it's database
+     * The `url` parameter is a datasource name, as supported by CakePHP and other frameworks.
+     *
+     * Some examples:
+     * - beanstalkd:  beanstalk://127.0.0.1:11300?queue=default&timeout=1
+     * - in memory:   memory:///?queue=default&timeout=1
+     * - mysql:       mysql://travis@127.0.0.1:3306/database_name?queue=default&timeout=1
+     * - /dev/null:   null:///?queue=default&timeout=1
+     * - redis:       redis://travis@127.0.0.1:6379/0?queue=default&timeout=1
+     * - synchronous: synchronous:///?queue=default&timeout=1
+     * - postgres:    pgsql://postgres@127.0.0.1:5432/database_name?queue=default
      */
     'Queuesadilla' => [
         'default' => [
             'url' => env('QUEUESADILLA_DEFAULT_URL', ''),
         ],
     ],
-
+    
 Note that the config array is passed as settings to the queueing engine. Please
 refer to the Queuesadilla `docs <http://josegonzalez.viewdocs.io/php-queuesadilla/>`_
 for more information on how each engine can be configured.
