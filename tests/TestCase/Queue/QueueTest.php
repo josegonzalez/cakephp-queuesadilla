@@ -1,5 +1,5 @@
 <?php
-namespace Cake\Test\TestCase\Log;
+namespace Josegonzalez\CakeQueuesadilla\Test\Queue;
 
 use Cake\Core\Configure;
 use Cake\Core\Plugin;
@@ -47,7 +47,7 @@ class QueueTest extends TestCase
      */
     public function testImportingQueueEngineFailure()
     {
-        Queue::config('fail', []);
+        Queue::setConfig('fail', []);
         Queue::engine('fail');
     }
 
@@ -58,8 +58,8 @@ class QueueTest extends TestCase
      */
     public function testValidKeyName()
     {
-        Log::config('stdout', ['engine' => 'File']);
-        Queue::config('valid', [
+        Log::setConfig('stdout', ['engine' => 'File']);
+        Queue::setConfig('valid', [
             'url' => 'mysql://username:password@localhost:80/database'
         ]);
         $engine = Queue::engine('valid');
@@ -74,7 +74,7 @@ class QueueTest extends TestCase
      */
     public function testNotImplementingInterface()
     {
-        Queue::config('fail', ['engine' => '\stdClass']);
+        Queue::setConfig('fail', ['engine' => '\stdClass']);
         Queue::engine('fail');
     }
 
@@ -85,7 +85,7 @@ class QueueTest extends TestCase
      */
     public function testDrop()
     {
-        Queue::config('default', [
+        Queue::setConfig('default', [
             'url' => 'mysql://username:password@localhost:80/database'
         ]);
         $result = Queue::configured();
@@ -105,7 +105,7 @@ class QueueTest extends TestCase
      */
     public function testConfigErrorOnReconfigure()
     {
-        Queue::config('tests', ['url' => 'mysql://username:password@localhost:80/database']);
-        Queue::config('tests', ['url' => 'null://']);
+        Queue::setConfig('tests', ['url' => 'mysql://username:password@localhost:80/database']);
+        Queue::setConfig('tests', ['url' => 'null://']);
     }
 }
