@@ -5,7 +5,6 @@ use Cake\Core\Exception\Exception;
 use Cake\Database\Connection;
 use Cake\Datasource\ConnectionManager;
 use Cake\Utility\Hash;
-use PDOException;
 use josegonzalez\Queuesadilla\Engine\PdoEngine;
 
 class CakeEngine extends PdoEngine
