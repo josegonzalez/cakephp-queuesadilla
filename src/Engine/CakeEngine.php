@@ -39,6 +39,7 @@ class CakeEngine extends PdoEngine
             $this->logger()->error($e->getMessage());
             $this->connection = null;
         }
+
         return (bool)$this->connection;
     }
 }
