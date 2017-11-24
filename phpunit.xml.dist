@@ -23,6 +23,9 @@
             <directory suffix=".php">./vendor</directory>
             <file>./tests/bootstrap.php</file>
         </blacklist>
+        <whitelist processUncoveredFilesFromWhitelist="true">
+            <directory suffix=".php">./src</directory>
+        </whitelist>
     </filter>
 
     <!-- Setup a listener for fixtures -->
