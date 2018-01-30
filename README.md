@@ -12,7 +12,7 @@ This plugin is a simple wrapper around the Queuesadilla queuing library, providi
 ## Requirements
 
 * CakePHP 3.x
-* PHP 5.4+
+* PHP 5.6+
 * Patience
 
 ## Documentation

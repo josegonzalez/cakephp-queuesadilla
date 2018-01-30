@@ -1,7 +1,7 @@
 <?php
 use Migrations\AbstractMigration;
 
-class AddDefaultValueForLocked extends AbstractMigration
+class AddCreatedAt extends AbstractMigration
 {
     /**
      * Change Method.
@@ -13,8 +13,12 @@ class AddDefaultValueForLocked extends AbstractMigration
     public function change()
     {
         $table = $this->table('jobs');
-        $table->changeColumn('locked', 'integer', [
-            'default' => 0
+        $table->addColumn('created_at', 'datetime', [
+            'default' => null,
+            'null' => true,
+        ]);
+        $table->addIndex([
+            'created_at',
         ]);
         $table->update();
     }

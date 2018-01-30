@@ -88,7 +88,7 @@ class QueuesadillaShell extends Shell
             'default' => 'Sequential',
             'help' => 'Name of worker class',
             'short' => 'w',
-        ])->description(__('Runs a Queuesadilla worker.'));
+        ])->setDescription(__('Runs a Queuesadilla worker.'));
 
         return $parser;
     }

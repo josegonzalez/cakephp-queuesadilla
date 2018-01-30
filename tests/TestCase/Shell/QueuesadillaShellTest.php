@@ -49,8 +49,8 @@ class QueuesadillaShellTest extends TestCase
      */
     public function testGetEngine()
     {
-        Log::config('stdout', ['engine' => 'File']);
-        Queue::config('default', [
+        Log::setConfig('stdout', ['engine' => 'File']);
+        Queue::setConfig('default', [
             'url' => 'mysql://username:password@localhost:80/database'
         ]);
         $logger = new NullLogger;
