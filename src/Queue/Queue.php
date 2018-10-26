@@ -275,7 +275,7 @@ class Queue
     /**
      * Push a single job onto the queue.
      *
-     * @param string $callable    a job callable
+     * @param callable $callable    a job callable
      * @param array  $args        an array of data to set for the job
      * @param array  $options     an array of options for publishing the job
      * @return bool the result of the push
