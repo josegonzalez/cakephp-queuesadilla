@@ -38,7 +38,7 @@ It can happen that your database connection timed out, when no jobs were acknowl
 A way to come around this, is to disconnect the CakePHP connection every time a job succeeded or failed.
 
 To do so, create a subclass of the ``QueuesadillaShell`` and implement two event listeners inside the ``getWorker`` method.
-You can easily do that by baking a shell with ``bin/cake bake shell MyQueuesadillaShell``  command and alter the created
+You can easily do that by baking a shell with ``bin/cake bake shell MyQueuesadilla``  command and alter the created
 class as below:
 
 .. code:: php
@@ -49,9 +49,9 @@ class as below:
     use Josegonzalez\CakeQueuesadilla\Shell\QueuesadillaShell;
 
     /**
-     * AlteredQueuesadillaShell shell command.
+     * MyQueuesadilla shell command.
      */
-    class AlteredQueuesadillaShellShell extends QueuesadillaShell
+    class MyQueuesadillaShell extends QueuesadillaShell
     {
 
         /**
