@@ -36,20 +36,40 @@ for more information on how each engine can be configured.
 If your job callback is performing a database involved operation, you should check if the CakePHP database connection is still alive.
 It can happen that your database connection timed out, when no jobs were acknowledged for a long time.
 A way to come around this, is to disconnect the CakePHP connection every time a job succeeded or failed.
+
 To do so, create a subclass of the ``QueuesadillaShell`` and implement two event listeners inside the ``getWorker`` method.
+You can easily do that by baking a shell with ``bin/cake bake shell MyQueuesadillaShell``  command and alter the created
+class as below:
 
 .. code:: php
+    <?php
+    namespace App\Shell;
 
-    public function getWorker($engine, $logger)
+    use Cake\Datasource\ConnectionManager;
+    use Josegonzalez\CakeQueuesadilla\Shell\QueuesadillaShell;
+
+    /**
+     * AlteredQueuesadillaShell shell command.
+     */
+    class AlteredQueuesadillaShellShell extends QueuesadillaShell
     {
-        $worker = parent::getWorker($engine, $logger);
 
-        $worker->attachListener('Worker.job.success', function ($event) {
-            ConnectionManager::get('default')->disconnect();
-        });
-        $worker->attachListener('Worker.job.failure', function ($event) {
-            ConnectionManager::get('default')->disconnect();
-        });
+        /**
+         * @param \josegonzalez\Queuesadilla\Engine\Base $engine
+         * @param \Psr\Log\LoggerInterface $logger
+         * @return \josegonzalez\Queuesadilla\Worker\Base
+         */
+        public function getWorker($engine, $logger)
+        {
+            $worker = parent::getWorker($engine, $logger);
 
-        return $worker;
+            $worker->attachListener('Worker.job.success', function ($event) {
+                ConnectionManager::get('default')->disconnect();
+            });
+            $worker->attachListener('Worker.job.failure', function ($event) {
+                ConnectionManager::get('default')->disconnect();
+            });
+
+            return $worker;
+        }
     }

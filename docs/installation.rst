@@ -42,4 +42,5 @@ Once loaded, you'll need to consume the configuration in your
 
     <?php
     use Josegonzalez\CakeQueuesadilla\Queue\Queue;
+    Configure::load('Queuesadilla');
     Queue::config(Configure::consume('Queuesadilla'));
