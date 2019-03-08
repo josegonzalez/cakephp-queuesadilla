@@ -108,4 +108,35 @@ class QueueTest extends TestCase
         Queue::setConfig('tests', ['url' => 'mysql://username:password@localhost:80/database']);
         Queue::setConfig('tests', ['url' => 'null://']);
     }
+
+    /**
+     * Ensure Queue resets correctly
+     *
+     * @return void
+     */
+    public function testReset()
+    {
+        // Set the initial config
+        Queue::setConfig('test', [
+            'url' => 'null://',
+        ]);
+
+        $registry = Queue::registry();
+        $engine = Queue::engine('test');
+        $queue = Queue::queue('test');
+
+        // Reset the queue
+        Queue::reset();
+
+        // Set the config after reset and assert that objects have been recreated
+        Queue::setConfig('test', [
+            'url' => 'null://',
+        ]);
+        $newRegistry = Queue::registry();
+        $newEngine = Queue::engine('test');
+        $newQueue = Queue::queue('test');
+        $this->assertNotSame($registry, $newRegistry, 'After reset the registry references the old object');
+        $this->assertNotSame($engine, $newEngine, 'After reset the engine references the old object');
+        $this->assertNotSame($queue, $newQueue, 'After reset the queue references the old object');
+    }
 }

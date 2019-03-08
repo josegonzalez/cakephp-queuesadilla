@@ -183,6 +183,7 @@ class Queue
         static::$_registry = null;
         static::$_config = [];
         static::$_dirtyConfig = true;
+        static::$_queuers = [];
     }
 
     /**
