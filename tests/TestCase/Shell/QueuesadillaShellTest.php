@@ -1,9 +1,8 @@
 <?php
 namespace Josegonzalez\CakeQueuesadilla\Test\Shell;
 
-use Cake\Core\Plugin;
 use Cake\Log\Log;
-use Cake\TestSuite\TestCase;
+use Cake\TestSuite\ConsoleIntegrationTestCase;
 use Josegonzalez\CakeQueuesadilla\Queue\Queue;
 use Josegonzalez\CakeQueuesadilla\Shell\QueuesadillaShell;
 use josegonzalez\Queuesadilla\Engine\NullEngine;
@@ -12,9 +11,8 @@ use Psr\Log\NullLogger;
 /**
  * QueuesadillaShell test.
  */
-class QueuesadillaShellTest extends TestCase
+class QueuesadillaShellTest extends ConsoleIntegrationTestCase
 {
-
     /**
      * setup method
      *
@@ -90,5 +88,21 @@ class QueuesadillaShellTest extends TestCase
         $this->assertArrayHasKey('queue', $commands);
         $this->assertArrayHasKey('logger', $commands);
         $this->assertArrayHasKey('worker', $commands);
+    }
+
+    /**
+     * Test that the queuesadilla shell executes successfully.
+     *
+     * @return void
+     */
+    public function testMainSuccess()
+    {
+        Queue::setConfig('default', [
+            'url' => 'memory://',
+            'maxRuntime' => 1,
+        ]);
+
+        $this->exec('queuesadilla');
+        $this->assertExitCode(0);
     }
 }
