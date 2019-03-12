@@ -14,7 +14,7 @@
         }
     ],
     "require": {
-        "cakephp/cakephp": "~3.0",
+        "cakephp/cakephp": "^3.6",
         "php": ">=5.4",
         "josegonzalez/queuesadilla": "0.0.*"
     },
