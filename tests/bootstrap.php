@@ -64,7 +64,7 @@ Cake\Core\Configure::write('Session', [
     'defaults' => 'php'
 ]);
 
-Cake\Core\Plugin::load('Josegonzalez/CakeQueuesadilla', ['path' => ROOT . DS, 'autoload' => true]);
+Cake\Core\Plugin::getCollection()->add(new Josegonzalez\CakeQueuesadilla\Plugin());
 
 // Ensure default test connection is defined
 if (!getenv('db_dsn')) {
