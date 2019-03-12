@@ -29,7 +29,7 @@ matrix:
 
 before_script:
   - composer self-update
-  - composer install --prefer-source --no-interaction --dev
+  - composer install --no-interaction
 
   - sh -c "if [ '$DB' = 'mysql' ]; then if [ '$DOCKER' = '1' ]; then apt-get -qq install -qq -y mysql-server && service mysql start; fi; mysql -e 'CREATE DATABASE cakephp_test;'; fi"
 
