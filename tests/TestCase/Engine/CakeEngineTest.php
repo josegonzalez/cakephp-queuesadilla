@@ -154,6 +154,6 @@ class CakeEngineTest extends TestCase
         $this->assertInstanceOf('Josegonzalez\CakeQueuesadilla\Engine\CakeEngine', $engine);
         $this->assertEquals('test', $engine->config('datasource'));
         $this->assertTrue($engine->connect());
-        $this->assertEquals(ConnectionManager::get('test')->getDriver()->connection(), $engine->connection());
+        $this->assertEquals(ConnectionManager::get('test')->getDriver()->getConnection(), $engine->connection());
     }
 }

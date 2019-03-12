@@ -34,7 +34,7 @@ class CakeEngine extends PdoEngine
             /** @var Connection $connection */
             $connection = ConnectionManager::get(Hash::get($config, 'datasource'));
             $connection->connect();
-            $this->connection = $connection->getDriver()->connection();
+            $this->connection = $connection->getDriver()->getConnection();
         } catch (Exception $e) {
             $this->logger()->error($e->getMessage());
             $this->connection = null;
