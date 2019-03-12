@@ -59,19 +59,19 @@ $cache = [
     ]
 ];
 
-Cake\Cache\Cache::config($cache);
+Cake\Cache\Cache::setConfig($cache);
 Cake\Core\Configure::write('Session', [
     'defaults' => 'php'
 ]);
 
-Cake\Core\Plugin::load('Josegonzalez/CakeQueuesadilla', ['path' => ROOT . DS, 'autoload' => true]);
+Cake\Core\Plugin::getCollection()->add(new Josegonzalez\CakeQueuesadilla\Plugin());
 
 // Ensure default test connection is defined
 if (!getenv('db_dsn')) {
     putenv('db_dsn=sqlite:///:memory:');
 }
 
-Cake\Datasource\ConnectionManager::config('test', [
+Cake\Datasource\ConnectionManager::setConfig('test', [
     'url' => getenv('db_dsn'),
     'timezone' => 'UTC'
 ]);
