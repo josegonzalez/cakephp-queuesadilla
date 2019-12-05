@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace Josegonzalez\CakeQueuesadilla\Test\Shell;
 
 use Cake\Log\Log;
@@ -18,7 +20,7 @@ class QueuesadillaShellTest extends ConsoleIntegrationTestCase
      *
      * @return void
      */
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
         $this->io = $this->getMockBuilder('Cake\Console\ConsoleIo')
@@ -33,7 +35,7 @@ class QueuesadillaShellTest extends ConsoleIntegrationTestCase
      *
      * @return void
      */
-    public function tearDown()
+    public function tearDown(): void
     {
         parent::tearDown();
         Log::reset();
@@ -45,13 +47,13 @@ class QueuesadillaShellTest extends ConsoleIntegrationTestCase
      *
      * @return void
      */
-    public function testGetEngine()
+    public function testGetEngine(): void
     {
         Log::setConfig('stdout', ['engine' => 'File']);
         Queue::setConfig('default', [
-            'url' => 'mysql://username:password@localhost:80/database'
+            'url' => 'mysql://username:password@localhost:80/database',
         ]);
-        $logger = new NullLogger;
+        $logger = new NullLogger();
         $this->shell->params['config'] = 'default';
         $engine = $this->shell->getEngine($logger);
         $this->assertInstanceOf('josegonzalez\\Queuesadilla\\Engine\\MysqlEngine', $engine);
@@ -62,10 +64,10 @@ class QueuesadillaShellTest extends ConsoleIntegrationTestCase
      *
      * @return void
      */
-    public function testGetWorker()
+    public function testGetWorker(): void
     {
-        $logger = new NullLogger;
-        $engine = new NullEngine;
+        $logger = new NullLogger();
+        $engine = new NullEngine();
         $this->shell->params['worker'] = 'Sequential';
         $worker = $this->shell->getWorker($engine, $logger);
         $this->assertInstanceOf('josegonzalez\\Queuesadilla\\Worker\\SequentialWorker', $worker);
@@ -80,7 +82,7 @@ class QueuesadillaShellTest extends ConsoleIntegrationTestCase
      *
      * @return void
      */
-    public function testGetOptionParser()
+    public function testGetOptionParser(): void
     {
         $this->shell->loadTasks();
         $parser = $this->shell->getOptionParser();
@@ -95,7 +97,7 @@ class QueuesadillaShellTest extends ConsoleIntegrationTestCase
      *
      * @return void
      */
-    public function testMainSuccess()
+    public function testMainSuccess(): void
     {
         Queue::setConfig('default', [
             'url' => 'memory://',

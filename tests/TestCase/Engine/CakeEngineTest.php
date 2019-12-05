@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace Josegonzalez\CakeQueuesadilla\Test\Engine;
 
 use Cake\Datasource\ConnectionManager;
@@ -11,13 +13,12 @@ use Josegonzalez\CakeQueuesadilla\Queue\Queue;
  */
 class CakeEngineTest extends TestCase
 {
-
     /**
      * setup method
      *
      * @return void
      */
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
         Queue::reset();
@@ -31,7 +32,7 @@ class CakeEngineTest extends TestCase
      *
      * @return void
      */
-    public function tearDown()
+    public function tearDown(): void
     {
         parent::tearDown();
         Queue::reset();
@@ -42,11 +43,11 @@ class CakeEngineTest extends TestCase
      *
      * @return void
      */
-    public function testValidConfig()
+    public function testValidConfig(): void
     {
         Queue::setConfig('valid', [
             'className' => 'Josegonzalez\CakeQueuesadilla\Engine\CakeEngine',
-            'datasource' => 'test'
+            'datasource' => 'test',
         ]);
         $engine = Queue::engine('valid');
         $this->assertInstanceOf('Josegonzalez\CakeQueuesadilla\Engine\CakeEngine', $engine);
@@ -58,14 +59,14 @@ class CakeEngineTest extends TestCase
      *
      * @return void
      */
-    public function testInvalidDatasourceName()
+    public function testInvalidDatasourceName(): void
     {
         $this->Logger->expects($this->once())
             ->method('error')
             ->with('The datasource configuration "wrong-datasource" was not found.');
         Queue::setConfig('invalid', [
             'className' => 'Josegonzalez\CakeQueuesadilla\Engine\CakeEngine',
-            'datasource' => 'wrong-datasource'
+            'datasource' => 'wrong-datasource',
         ]);
         $engine = Queue::engine('invalid');
         $engine->setLogger($this->Logger);
@@ -79,19 +80,19 @@ class CakeEngineTest extends TestCase
      *
      * @return void
      */
-    public function testInvalidConfig()
+    public function testInvalidConfig(): void
     {
         $this->Logger->expects($this->once())
             ->method('error')
             ->with('Datasource class wrong-datasource-class could not be found. ');
         Queue::setConfig('invalid', [
             'className' => 'Josegonzalez\CakeQueuesadilla\Engine\CakeEngine',
-            'datasource' => 'wrong-datasource-class'
+            'datasource' => 'wrong-datasource-class',
         ]);
         ConnectionManager::setConfig('wrong-datasource-class', [
             'user' => 'invalid-user',
             'password' => 'invalid-password',
-            'host' => 'localhost'
+            'host' => 'localhost',
         ]);
         $engine = Queue::engine('invalid');
         $engine->setLogger($this->Logger);
@@ -103,21 +104,21 @@ class CakeEngineTest extends TestCase
      *
      * @return void
      */
-    public function testInvalidConfigParams()
+    public function testInvalidConfigParams(): void
     {
         $this->Logger->expects($this->once())
             ->method('error')
             ->with($this->matchesRegularExpression('/Connection to database could not be established:/'));
         Queue::setConfig('invalid', [
             'className' => 'Josegonzalez\CakeQueuesadilla\Engine\CakeEngine',
-            'datasource' => 'wrong-datasource-params'
+            'datasource' => 'wrong-datasource-params',
         ]);
         ConnectionManager::setConfig('wrong-datasource-params', [
             'className' => 'Cake\Database\Connection',
             'driver' => 'Cake\Database\Driver\Mysql',
             'user' => 'invalid-user',
             'password' => 'invalid-password',
-            'host' => 'localhost'
+            'host' => 'localhost',
         ]);
         $engine = Queue::engine('invalid');
         $engine->setLogger($this->Logger);
@@ -129,7 +130,7 @@ class CakeEngineTest extends TestCase
      *
      * @return void
      */
-    public function testNoDatasource()
+    public function testNoDatasource(): void
     {
         Queue::setConfig('noDatasource', [
             'className' => 'Josegonzalez\CakeQueuesadilla\Engine\CakeEngine',
@@ -144,11 +145,11 @@ class CakeEngineTest extends TestCase
      *
      * @return void
      */
-    public function testConnection()
+    public function testConnection(): void
     {
         Queue::setConfig('valid', [
             'className' => 'Josegonzalez\CakeQueuesadilla\Engine\CakeEngine',
-            'datasource' => 'test'
+            'datasource' => 'test',
         ]);
         $engine = Queue::engine('valid');
         $this->assertInstanceOf('Josegonzalez\CakeQueuesadilla\Engine\CakeEngine', $engine);

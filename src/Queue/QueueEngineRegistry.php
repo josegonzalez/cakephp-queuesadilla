@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace Josegonzalez\CakeQueuesadilla\Queue;
 
 use Cake\Core\App;
@@ -14,21 +16,16 @@ use RuntimeException;
  */
 class QueueEngineRegistry extends ObjectRegistry
 {
-
     /**
      * Resolve a queue engine classname.
      *
      * Part of the template method for Cake\Core\ObjectRegistry::load()
      *
      * @param string $class Partial classname to resolve.
-     * @return string|false Either the correct classname or false.
+     * @return string Either the correct classname or null.
      */
-    protected function _resolveClassName($class)
+    protected function _resolveClassName(string $class): ?string
     {
-        if (is_object($class)) {
-            return $class;
-        }
-
         return App::className($class, 'Queue/Engine', 'Engine');
     }
 
@@ -38,11 +35,11 @@ class QueueEngineRegistry extends ObjectRegistry
      * Part of the template method for Cake\Core\ObjectRegistry::load()
      *
      * @param string $class The classname that is missing.
-     * @param string $plugin The plugin the queue engine is missing in.
+     * @param string|null $plugin The plugin the queue engine is missing in.
      * @return void
      * @throws \RuntimeException
      */
-    protected function _throwMissingClassError($class, $plugin)
+    protected function _throwMissingClassError(string $class, ?string $plugin): void
     {
         throw new RuntimeException(sprintf('Could not load class %s', $class));
     }
@@ -58,7 +55,7 @@ class QueueEngineRegistry extends ObjectRegistry
      * @return \josegonzalez\Queuesadilla\Engine\EngineInterface The constructed queue engine class.
      * @throws \RuntimeException when an object doesn't implement the correct interface.
      */
-    protected function _create($class, $alias, $settings)
+    protected function _create($class, string $alias, array $settings): EngineInterface
     {
         if (is_callable($class)) {
             $class = $class($alias);
@@ -100,7 +97,7 @@ class QueueEngineRegistry extends ObjectRegistry
      * @param string $name The queue engine name.
      * @return void
      */
-    public function unload($name)
+    public function unload(string $name): void
     {
         unset($this->_loaded[$name]);
     }

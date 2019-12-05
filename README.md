@@ -5,14 +5,14 @@
 [![Documentation Status](https://readthedocs.org/projects/cakephp-queuesadilla/badge/?version=latest&style=flat-square)](https://readthedocs.org/projects/cakephp-queuesadilla/?badge=latest)
 [![Gratipay](https://img.shields.io/gratipay/josegonzalez.svg?style=flat-square)](https://gratipay.com/~josegonzalez/)
 
-# CakePHP Queuesadilla Plugin 3.0
+# CakePHP Queuesadilla Plugin 4.0
 
 This plugin is a simple wrapper around the Queuesadilla queuing library, providing tighter integration with the CakePHP framework.
 
 ## Requirements
 
-* CakePHP 3.x
-* PHP 5.6+
+* CakePHP 4.x
+* PHP 7.2+
 * Patience
 
 ## Documentation
