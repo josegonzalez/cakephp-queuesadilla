@@ -35,6 +35,5 @@
             "Josegonzalez\\CakeQueuesadilla\\Test\\": "tests"
         }
     },
-    "minimum-stability": "dev",
     "prefer-stable": true
 }
