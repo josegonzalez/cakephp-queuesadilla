@@ -1,14 +1,15 @@
 <?php
+declare(strict_types=1);
+
 namespace Josegonzalez\CakeQueuesadilla\Queue;
 
 use Cake\Core\ObjectRegistry;
 use Cake\Core\StaticConfigTrait;
 use Cake\Utility\Hash;
 use InvalidArgumentException;
-use Josegonzalez\CakeQueuesadilla\Queue\QueueEngineRegistry;
+use josegonzalez\Queuesadilla\Engine\EngineInterface;
 use josegonzalez\Queuesadilla\Engine\NullEngine;
 use josegonzalez\Queuesadilla\Queue as Queuer;
-use RuntimeException;
 
 /**
  * Queue provides a consistent interface to Queuing in your application. It allows you
@@ -55,7 +56,6 @@ use RuntimeException;
  */
 class Queue
 {
-
     use StaticConfigTrait {
         parseDsn as protected _parseDsn;
     }
@@ -110,7 +110,7 @@ class Queue
      *
      * @return void
      */
-    protected static function _init()
+    protected static function _init(): void
     {
         if (empty(static::$_registry)) {
             static::$_registry = new QueueEngineRegistry();
@@ -127,7 +127,7 @@ class Queue
      *
      * @return void
      */
-    protected static function _loadConfig()
+    protected static function _loadConfig(): void
     {
         foreach (static::$_config as $name => $properties) {
             if (isset($properties['engine'])) {
@@ -149,7 +149,7 @@ class Queue
      * @return array The configuration array to be stored after parsing the DSN
      * @throws \InvalidArgumentException If not passed a string
      */
-    public static function parseDsn($dsn)
+    public static function parseDsn(string $dsn): array
     {
         $dsn = static::_parseDsn($dsn);
         if (is_array($dsn)) {
@@ -168,6 +168,7 @@ class Queue
 
         return $dsn;
     }
+
     /**
      * Reset all the connected loggers.  This is useful to do when changing the logging
      * configuration or during testing when you want to reset the internal state of the
@@ -178,7 +179,7 @@ class Queue
      *
      * @return void
      */
-    public static function reset()
+    public static function reset(): void
     {
         static::$_registry = null;
         static::$_config = [];
@@ -193,7 +194,7 @@ class Queue
      * @param \Cake\Core\ObjectRegistry|null $registry Injectable registry object.
      * @return \Cake\Core\ObjectRegistry
      */
-    public static function registry(ObjectRegistry $registry = null)
+    public static function registry(?ObjectRegistry $registry = null): ObjectRegistry
     {
         if ($registry) {
             static::$_registry = $registry;
@@ -213,7 +214,7 @@ class Queue
      * @return void
      * @throws \InvalidArgumentException When a queue engine cannot be created.
      */
-    protected static function _buildEngine($name)
+    protected static function _buildEngine(string $name): void
     {
         $registry = static::registry();
 
@@ -236,7 +237,7 @@ class Queue
      * @param string $config The configuration name you want an engine for.
      * @return \josegonzalez\Queuesadilla\Engine\EngineInterface When caching is disabled a null engine will be returned.
      */
-    public static function engine($config)
+    public static function engine(string $config): EngineInterface
     {
         if (!static::$_enabled) {
             return new NullEngine();
@@ -262,7 +263,7 @@ class Queue
      * @param string $config The configuration name you want an engine for.
      * @return \josegonzalez\Queuesadilla\Queue
      */
-    public static function queue($config)
+    public static function queue(string $config): Queuer
     {
         if (isset(static::$_queuers[$config])) {
             return static::$_queuers[$config];
@@ -281,7 +282,7 @@ class Queue
      * @param array  $options     an array of options for publishing the job
      * @return bool the result of the push
      */
-    public static function push($callable, $args = [], $options = [])
+    public static function push(callable $callable, array $args = [], array $options = []): bool
     {
         $config = Hash::get($options, 'config', 'default');
         $queue = static::queue($config);

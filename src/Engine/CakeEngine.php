@@ -1,8 +1,9 @@
 <?php
+declare(strict_types=1);
+
 namespace Josegonzalez\CakeQueuesadilla\Engine;
 
 use Cake\Core\Exception\Exception;
-use Cake\Database\Connection;
 use Cake\Datasource\ConnectionManager;
 use Cake\Utility\Hash;
 use josegonzalez\Queuesadilla\Engine\PdoEngine;
@@ -21,7 +22,7 @@ class CakeEngine extends PdoEngine
         'attempts' => 0,
         'attempts_delay' => 600,
         'table' => 'jobs',
-        'datasource' => 'default'
+        'datasource' => 'default',
     ];
 
     /**
@@ -31,7 +32,7 @@ class CakeEngine extends PdoEngine
     {
         $config = $this->settings;
         try {
-            /** @var Connection $connection */
+            /** @var \Cake\Database\Connection $connection */
             $connection = ConnectionManager::get(Hash::get($config, 'datasource'));
             $connection->connect();
             $this->connection = $connection->getDriver()->getConnection();

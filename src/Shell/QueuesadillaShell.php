@@ -1,10 +1,16 @@
 <?php
+declare(strict_types=1);
+
 namespace Josegonzalez\CakeQueuesadilla\Shell;
 
+use Cake\Console\ConsoleOptionParser;
 use Cake\Console\Shell;
 use Cake\Log\Log;
 use Cake\Utility\Hash;
 use Josegonzalez\CakeQueuesadilla\Queue\Queue;
+use josegonzalez\Queuesadilla\Engine\Base as BaseEngine;
+use josegonzalez\Queuesadilla\Worker\Base as BaseWorker;
+use Psr\Log\LoggerInterface;
 
 class QueuesadillaShell extends Shell
 {
@@ -14,7 +20,7 @@ class QueuesadillaShell extends Shell
      *
      * @return void
      */
-    public function main()
+    public function main(): void
     {
         $logger = Log::engine($this->params['logger']);
         $engine = $this->getEngine($logger);
@@ -28,7 +34,7 @@ class QueuesadillaShell extends Shell
      * @param \Psr\Log\LoggerInterface $logger logger
      * @return \josegonzalez\Queuesadilla\Engine\Base
      */
-    public function getEngine($logger)
+    public function getEngine(LoggerInterface $logger): BaseEngine
     {
         $config = Hash::get($this->params, 'config');
         $engine = Queue::engine($config);
@@ -47,7 +53,7 @@ class QueuesadillaShell extends Shell
      * @param \Psr\Log\LoggerInterface $logger logger
      * @return \josegonzalez\Queuesadilla\Worker\Base
      */
-    public function getWorker($engine, $logger)
+    public function getWorker(BaseEngine $engine, LoggerInterface $logger): BaseWorker
     {
         $worker = $this->params['worker'];
         $WorkerClass = "josegonzalez\\Queuesadilla\\Worker\\" . $worker . "Worker";
@@ -55,7 +61,7 @@ class QueuesadillaShell extends Shell
         return new $WorkerClass($engine, $logger, [
             'queue' => $engine->config('queue'),
             'maxRuntime' => $engine->config('maxRuntime'),
-            'maxIterations' => $engine->config('maxIterations')
+            'maxIterations' => $engine->config('maxIterations'),
         ]);
     }
 
@@ -64,7 +70,7 @@ class QueuesadillaShell extends Shell
      *
      * @return \Cake\Console\ConsoleOptionParser
      */
-    public function getOptionParser()
+    public function getOptionParser(): ConsoleOptionParser
     {
         $parser = parent::getOptionParser();
         $parser->addOption('config', [

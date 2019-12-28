@@ -1,9 +1,8 @@
 <?php
+declare(strict_types=1);
+
 namespace Josegonzalez\CakeQueuesadilla\Test\Queue;
 
-use Cake\Core\Configure;
-use Cake\Core\Plugin;
-use Cake\Log\Engine\FileLog;
 use Cake\Log\Log;
 use Cake\TestSuite\TestCase;
 use Josegonzalez\CakeQueuesadilla\Queue\Queue;
@@ -14,13 +13,12 @@ use Josegonzalez\CakeQueuesadilla\Queue\Queue;
  */
 class QueueTest extends TestCase
 {
-
     /**
      * setup method
      *
      * @return void
      */
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
         Log::reset();
@@ -32,7 +30,7 @@ class QueueTest extends TestCase
      *
      * @return void
      */
-    public function tearDown()
+    public function tearDown(): void
     {
         parent::tearDown();
         Log::reset();
@@ -42,11 +40,12 @@ class QueueTest extends TestCase
     /**
      * test all the errors from failed logger imports
      *
-     * @expectedException \InvalidArgumentException
      * @return void
      */
-    public function testImportingQueueEngineFailure()
+    public function testImportingQueueEngineFailure(): void
     {
+        $this->expectException('\InvalidArgumentException');
+
         Queue::setConfig('fail', []);
         Queue::engine('fail');
     }
@@ -56,11 +55,11 @@ class QueueTest extends TestCase
      *
      * @return void
      */
-    public function testValidKeyName()
+    public function testValidKeyName(): void
     {
         Log::setConfig('stdout', ['engine' => 'File']);
         Queue::setConfig('valid', [
-            'url' => 'mysql://username:password@localhost:80/database'
+            'url' => 'mysql://username:password@localhost:80/database',
         ]);
         $engine = Queue::engine('valid');
         $this->assertInstanceOf('josegonzalez\Queuesadilla\Engine\MysqlEngine', $engine);
@@ -69,11 +68,12 @@ class QueueTest extends TestCase
     /**
      * test that loggers have to implement the correct interface.
      *
-     * @expectedException \RuntimeException
      * @return void
      */
-    public function testNotImplementingInterface()
+    public function testNotImplementingInterface(): void
     {
+        $this->expectException('\RuntimeException');
+
         Queue::setConfig('fail', ['engine' => '\stdClass']);
         Queue::engine('fail');
     }
@@ -83,10 +83,10 @@ class QueueTest extends TestCase
      *
      * @return void
      */
-    public function testDrop()
+    public function testDrop(): void
     {
         Queue::setConfig('default', [
-            'url' => 'mysql://username:password@localhost:80/database'
+            'url' => 'mysql://username:password@localhost:80/database',
         ]);
         $result = Queue::configured();
         $this->assertContains('default', $result);
@@ -97,14 +97,16 @@ class QueueTest extends TestCase
         $result = Queue::configured();
         $this->assertNotContains('default', $result);
     }
+
     /**
      * Ensure you cannot reconfigure a log adapter.
      *
-     * @expectedException \BadMethodCallException
      * @return void
      */
-    public function testConfigErrorOnReconfigure()
+    public function testConfigErrorOnReconfigure(): void
     {
+        $this->expectException('\BadMethodCallException');
+
         Queue::setConfig('tests', ['url' => 'mysql://username:password@localhost:80/database']);
         Queue::setConfig('tests', ['url' => 'null://']);
     }
@@ -114,7 +116,7 @@ class QueueTest extends TestCase
      *
      * @return void
      */
-    public function testReset()
+    public function testReset(): void
     {
         // Set the initial config
         Queue::setConfig('test', [
