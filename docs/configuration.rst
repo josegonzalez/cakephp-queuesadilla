@@ -42,6 +42,7 @@ You can easily do that by baking a shell with ``bin/cake bake shell MyQueuesadil
 class as below:
 
 .. code:: php
+
     <?php
     namespace App\Shell;
 
